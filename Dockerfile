@@ -6,7 +6,7 @@ COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
 COPY . .
-RUN chmod +x /docker-entrypoint.sh
+ENV NODE_OPTIONS="--openssl-legacy-provider"
 RUN yarn build
 
 # Serve stage
