@@ -6,7 +6,7 @@ COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
 COPY . .
-ENV NODE_OPTIONS=--openssl-legacy-provider
+RUN chmod +x /docker-entrypoint.sh
 RUN yarn build
 
 # Serve stage
@@ -16,7 +16,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Store nginx.conf as a template; entrypoint renders it with envsubst
 COPY nginx.conf /etc/nginx/nginx.conf.template
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-ENV NODE_OPTIONS=--openssl-legacy-provider
+RUN chmod +x /docker-entrypoint.sh
 
 EXPOSE 8080
 ENTRYPOINT ["/docker-entrypoint.sh"]
